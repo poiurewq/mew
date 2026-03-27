@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "mew"
-version = "0.3.0"
+version = "0.3.1"
 description = "Preprocess Markdown study notes and synthesize speech via Kokoro TTS"
 requires-python = ">=3.10"
 dependencies = [
