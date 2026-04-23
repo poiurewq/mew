@@ -5,7 +5,7 @@
 #        ./test cli           Run only test_cli
 #        ./test preprocess    Run only test_preprocess
 
-VENV="/opt/homebrew/var/mew/venv"
+VENV="/opt/homebrew/var/oto/venv"
 cd "$(dirname "$0")"
 
 if [ -z "$1" ]; then

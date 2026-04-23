@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-test_speak.py — Unit tests for mew.speak (speed adjustment)
+test_speak.py — Unit tests for oto.speak (speed adjustment)
 
 Run with:
     python3 -m pytest test_speak.py -v
@@ -11,7 +11,7 @@ import unittest
 
 import numpy as np
 
-from mew.speak import adjust_speed
+from oto.speak import adjust_speed
 
 
 def _sine(freq: float = 440.0, duration: float = 1.0, sr: int = 24_000) -> np.ndarray:

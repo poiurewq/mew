@@ -1,5 +1,5 @@
 """
-mew.speak — synthesize text to a WAV file via Kokoro TTS (ONNX).
+oto.speak — synthesize text to a WAV file via Kokoro TTS (ONNX).
 """
 
 from __future__ import annotations
@@ -12,7 +12,7 @@ import time
 from pathlib import Path
 from urllib.request import urlretrieve
 
-from mew.config import DEFAULTS
+from oto.config import DEFAULTS
 
 # kokoro-onnx release assets (v1.0)
 _KOKORO_RELEASE = "https://github.com/thewh1teagle/kokoro-onnx/releases/download/model-files-v1.0"
@@ -23,9 +23,9 @@ MODEL_REGISTRY = {
 }
 _VOICES_FILE = "voices-v1.0.bin"
 
-PREFS_FILE = Path.home() / ".config" / "mew" / "prefs.json"
-CACHE_DIR  = Path.home() / ".cache"  / "mew" / "models"
-LOG_FILE   = Path.home() / ".local" / "share" / "mew" / "synthesis.jsonl"
+PREFS_FILE = Path.home() / ".config" / "oto" / "prefs.json"
+CACHE_DIR  = Path.home() / ".cache"  / "oto" / "models"
+LOG_FILE   = Path.home() / ".local" / "share" / "oto" / "synthesis.jsonl"
 
 _MIN_SAMPLES_FOR_ESTIMATE = 3
 
@@ -361,7 +361,7 @@ def synthesize(
     voice_id    = voice if voice is not None else prefs.get("voice", DEFAULTS["voice"])
 
     # Resolve friendly voice name → Kokoro voice ID if needed
-    from mew.config import VOICE_REGISTRY
+    from oto.config import VOICE_REGISTRY
     if voice_id in VOICE_REGISTRY:
         voice_id = VOICE_REGISTRY[voice_id]
 

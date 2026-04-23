@@ -1,4 +1,4 @@
-# mew
+# oto
 
 Preprocess Markdown study notes and synthesize speech via Kokoro TTS.
 
@@ -16,17 +16,17 @@ brew venv (dependencies + espeak):
 ```
 
 Any edits to the source take effect immediately — no reinstall needed.
-The brew-installed version at `$(brew --prefix)/bin/mew` remains untouched.
+The brew-installed version at `$(brew --prefix)/bin/oto` remains untouched.
 
 ## Uninstalling
 
-`brew uninstall mew` removes the formula but leaves three directories behind:
+`brew uninstall oto` removes the formula but leaves three directories behind:
 
 ```sh
-brew uninstall mew
-rm -rf /opt/homebrew/var/mew/venv   # Python environment
-rm -rf ~/.config/mew                # user preferences
-rm -rf ~/.cache/mew                 # downloaded model files
+brew uninstall oto
+rm -rf /opt/homebrew/var/oto/venv   # Python environment
+rm -rf ~/.config/oto                # user preferences
+rm -rf ~/.cache/oto                 # downloaded model files
 ```
 
 ### Running tests

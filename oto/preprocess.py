@@ -8,7 +8,7 @@ Transformations applied (in pipeline order):
         dramatic pause), ellipsis char → "..."
  []   Strip bracket expressions: [1], [1,2] citation markers removed;
         [text] brackets removed (content kept) — Kokoro stumbles on []
- SB.  Apply custom text substitutions from ~/.config/mew/substitutions.json
+ SB.  Apply custom text substitutions from ~/.config/oto/substitutions.json
  10.  Expand parenthetical abbreviations:
         (ex. X) → ", such as X"   (i.e. X) → ", that is X"   (e.g. X) → ", for example X"
  RG.  Expand numeric ranges: 10-20 → "ten to twenty", 1990-2024 → "nineteen ninety to..."
@@ -133,11 +133,11 @@ _RE_RANGE = re.compile(r'(?<!\w)(\d+)-(\d+)(?!\w)')
 
 # ── Configuration ──────────────────────────────────────────────────────────────
 
-SUBSTITUTIONS_FILE = Path.home() / ".config" / "mew" / "substitutions.json"
+SUBSTITUTIONS_FILE = Path.home() / ".config" / "oto" / "substitutions.json"
 
 
 def _load_substitutions() -> list[dict]:
-    """Load custom substitutions from ~/.config/mew/substitutions.json.
+    """Load custom substitutions from ~/.config/oto/substitutions.json.
 
     On first ever call (file absent), seeds the file with default entries
     so that common titles, abbreviations, and acronyms are handled out of
@@ -145,7 +145,7 @@ def _load_substitutions() -> list[dict]:
     Each entry is a dict with keys: find, replace, regex (bool), first_only (bool).
     """
     if not SUBSTITUTIONS_FILE.exists():
-        from mew.config import ensure_substitutions_seeded
+        from oto.config import ensure_substitutions_seeded
         ensure_substitutions_seeded()
     if not SUBSTITUTIONS_FILE.exists():
         return []
@@ -341,7 +341,7 @@ def _expand_acronyms(line: str, seen: set) -> str:
     """4. Expand each known acronym on its very first appearance.
 
     DEPRECATED: Kept for backward compatibility. New code should use
-    _apply_substitutions() with ~/.config/mew/substitutions.json instead.
+    _apply_substitutions() with ~/.config/oto/substitutions.json instead.
     This function is no longer called in the pipeline.
     """
     return line

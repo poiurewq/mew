@@ -1,12 +1,12 @@
-.\" mew.1 — manual page for mew
+.\" oto.1 — manual page for oto
 .\" -----------------------------------------------------------------------
-.TH MEW 1 "March 23, 2026" "mew 0.3.0" "User Commands"
+.TH OTO 1 "March 23, 2026" "oto 0.3.0" "User Commands"
 .\" -----------------------------------------------------------------------
 .SH NAME
-mew \- preprocess study notes and synthesize speech via Kokoro TTS
+oto \- preprocess study notes and synthesize speech via Kokoro TTS
 .\" -----------------------------------------------------------------------
 .SH SYNOPSIS
-.B mew
+.B oto
 .RB [ \-h ]
 .RB [ \-i " | " \-p ]
 .RB [ \-n ]
@@ -21,7 +21,7 @@ mew \- preprocess study notes and synthesize speech via Kokoro TTS
 .RI [ file\~ .\|.\|.]
 .\" -----------------------------------------------------------------------
 .SH DESCRIPTION
-.B mew
+.B oto
 takes one or more note files, runs each through a text preprocessing
 pipeline optimised for natural-sounding speech output, then synthesizes
 the result to a WAV file using the Kokoro TTS engine (ONNX) via a
@@ -29,7 +29,7 @@ self-contained Python venv.
 .PP
 By default, only the synthesized audio is written:
 .TP
-.I file.mew.wav
+.I file.oto.wav
 The synthesized audio, ready for playback.
 .PP
 The intermediate preprocessed text is used internally but not saved
@@ -47,7 +47,7 @@ Print the version number and exit.
 .TP
 .BR \-i ", " \-\-intermediate
 Intermediate only: preprocess the input and write
-.IR file.mew.md ,
+.IR file.oto.md ,
 then exit without synthesizing.
 Mutually exclusive with
 .BR \-p .
@@ -85,18 +85,18 @@ speeds above 2.0 additionally apply WSOLA time-stretching.
 .\" -----------------------------------------------------------------------
 .SH CONFIGURATION
 Run
-.B mew config
+.B oto config
 to interactively select the TTS model and voice.
 Preferences are saved to
-.I ~/.config/mew/prefs.json
+.I ~/.config/oto/prefs.json
 and used on every subsequent synthesis run.
 .PP
 .B Subcommands:
 .TP
-.B mew config
+.B oto config
 Interactive prompt: offers to change model, voice, playback method, and speed.
 .TP
-.B mew config model
+.B oto config model
 Change model only.
 Available models (Kokoro-82M v1.0 ONNX variants):
 .BR int8 " (compact, 88 MB),"
@@ -104,7 +104,7 @@ Available models (Kokoro-82M v1.0 ONNX variants):
 .BR fp32 " (full precision, 310 MB)."
 If the chosen model has not been downloaded, you are prompted to download it.
 .TP
-.B mew config voice
+.B oto config voice
 Change voice only.
 American female voices:
 .BR Heart ", " Bella ", " Sarah ", " Nova ", " Nicole ", " Jessica .
@@ -115,28 +115,28 @@ British female voices:
 British male voices:
 .BR George ", " Daniel .
 .TP
-.B mew config playback
+.B oto config playback
 Change the playback method (terminal or app).
 .TP
-.B mew config speed
+.B oto config speed
 Change the default speed multiplier.
 .TP
-.B mew config subs
+.B oto config subs
 Manage custom text substitutions (alias:
-.BR "mew config substitutions" ).
+.BR "oto config substitutions" ).
 Opens an interactive CRUD interface to list, add, edit, and delete
 entries in
-.IR ~/.config/mew/substitutions.json .
+.IR ~/.config/oto/substitutions.json .
 On first run, offers to seed the file with common abbreviations and
 acronyms.
 .TP
-.B mew config delete
+.B oto config delete
 Interactively select a downloaded model to remove from the cache.
 Only downloaded models are listed.
 If the selected model is the active model, a warning is shown before
 confirming deletion.
 .TP
-.B mew config show
+.B oto config show
 Print current model and voice settings without making changes.
 .\" -----------------------------------------------------------------------
 .SH PREPROCESSING PIPELINE
@@ -232,12 +232,12 @@ are removed.
 .TP
 .B Custom text substitutions
 User\-defined find/replace rules from
-.I ~/.config/mew/substitutions.json
+.I ~/.config/oto/substitutions.json
 are applied in order.
 Each entry can be a literal string or a regular expression, and can
 optionally be restricted to first occurrence only.
 Run
-.B mew config subs
+.B oto config subs
 to manage entries interactively.
 .TP
 .B Introductory\-clause commas
@@ -287,18 +287,18 @@ are left unwrapped.
 .\" -----------------------------------------------------------------------
 .SH FILES
 .TP
-.I $(brew \-\-prefix)/bin/mew
-Wrapper script that delegates to the mew entry point inside the Homebrew-managed venv.
+.I $(brew \-\-prefix)/bin/oto
+Wrapper script that delegates to the oto entry point inside the Homebrew-managed venv.
 .TP
-.I /opt/homebrew/var/mew/venv/
-Python virtual environment containing mew, kokoro\-onnx, and their
+.I /opt/homebrew/var/oto/venv/
+Python virtual environment containing oto, kokoro\-onnx, and their
 dependencies.
 Managed by Homebrew; do not modify directly.
 .TP
-.I ~/.config/mew/prefs.json
+.I ~/.config/oto/prefs.json
 Persistent model and voice preferences.
 .TP
-.I ~/.config/mew/substitutions.json
+.I ~/.config/oto/substitutions.json
 Custom text substitution rules.
 A JSON array of objects with fields
 .BR find ", " replace ", " regex " (bool), " first_only " (bool),"
@@ -307,56 +307,56 @@ and an optional
 field.
 Array order controls execution order.
 Created via
-.BR "mew config subs" .
+.BR "oto config subs" .
 Created automatically when preferences are first saved via
-.BR "mew config" .
+.BR "oto config" .
 .TP
-.I ~/.cache/mew/models/
+.I ~/.cache/oto/models/
 Kokoro model and voice files, downloaded automatically on first use or
 via
-.BR "mew config" .
+.BR "oto config" .
 Contains the ONNX model file and voice embeddings.
 .TP
-.I ~/.local/share/mew/synthesis.jsonl
+.I ~/.local/share/oto/synthesis.jsonl
 Synthesis timing log.
 Each line records the phoneme count, elapsed seconds, and model alias
 for one synthesis run.
-After at least three entries for a given model, mew displays an estimated
+After at least three entries for a given model, oto displays an estimated
 progress bar during synthesis.
 .\" -----------------------------------------------------------------------
 .SH EXAMPLES
-Synthesize a single note file (produces notes.mew.wav):
+Synthesize a single note file (produces notes.oto.wav):
 .PP
 .RS
-.B mew notes.md
+.B oto notes.md
 .RE
 .PP
 Synthesize and auto-play:
 .PP
 .RS
-.B mew \-P notes.md
+.B oto \-P notes.md
 .RE
 .PP
 Synthesize at 1.5\(mu speed with a specific voice:
 .PP
 .RS
-.B mew \-s 1.5 \-v Sarah notes.md
+.B oto \-s 1.5 \-v Sarah notes.md
 .RE
 .PP
 Export the preprocessed text for inspection, then synthesize it:
 .PP
 .RS
 .nf
-mew \-i notes.md        # writes notes.mew.md
-less notes.mew.md       # review
-mew \-p notes.mew.md    # writes notes.mew.wav
+oto \-i notes.md        # writes notes.oto.md
+less notes.oto.md       # review
+oto \-p notes.oto.md    # writes notes.oto.wav
 .fi
 .RE
 .PP
 Preview preprocessed text without creating files:
 .PP
 .RS
-.B mew \-n notes.md
+.B oto \-n notes.md
 .RE
 .\" -----------------------------------------------------------------------
 .SH EXIT STATUS

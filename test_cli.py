@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-test_cli.py — Unit and integration tests for mew.cli (Phase 1)
+test_cli.py — Unit and integration tests for oto.cli (Phase 1)
 
 Run with:
     python3 -m pytest test_cli.py -v
@@ -22,19 +22,19 @@ def _run_cli(args: list[str], mock_synth=True) -> tuple[str, str, int]:
     """Run cli.main() with given args, return (stdout, stderr, exit_code)."""
     out, err = io.StringIO(), io.StringIO()
     exit_code = 0
-    with mock.patch('sys.argv', ['mew'] + args), \
+    with mock.patch('sys.argv', ['oto'] + args), \
          mock.patch('sys.stdout', out), \
          mock.patch('sys.stderr', err):
         if mock_synth:
-            with mock.patch('mew.speak.synthesize'):
+            with mock.patch('oto.speak.synthesize'):
                 try:
-                    from mew.cli import main
+                    from oto.cli import main
                     main()
                 except SystemExit as e:
                     exit_code = e.code if e.code is not None else 0
         else:
             try:
-                from mew.cli import main
+                from oto.cli import main
                 main()
             except SystemExit as e:
                 exit_code = e.code if e.code is not None else 0
@@ -59,12 +59,12 @@ class TestFlagParsing(unittest.TestCase):
     def test_version_short(self):
         out, _, code = _run_cli(['-V'])
         self.assertEqual(code, 0)
-        self.assertIn('mew', out)
+        self.assertIn('oto', out)
 
     def test_version_long(self):
         out, _, code = _run_cli(['--version'])
         self.assertEqual(code, 0)
-        self.assertIn('mew', out)
+        self.assertIn('oto', out)
 
     def test_version_short_and_long_match(self):
         out_short, _, _ = _run_cli(['-V'])
@@ -85,7 +85,7 @@ class TestFlagParsing(unittest.TestCase):
             out, _, code = _run_cli(['--intermediate', tmp])
             self.assertEqual(code, 0)
             out_path = out.strip()
-            self.assertTrue(out_path.endswith('.mew.md'))
+            self.assertTrue(out_path.endswith('.oto.md'))
             if os.path.exists(out_path):
                 os.unlink(out_path)
         finally:
@@ -93,7 +93,7 @@ class TestFlagParsing(unittest.TestCase):
 
     def test_preprocessed_long(self):
         """--preprocessed should be accepted like -p."""
-        with tempfile.NamedTemporaryFile(suffix='.mew.md', mode='w', delete=False) as f:
+        with tempfile.NamedTemporaryFile(suffix='.oto.md', mode='w', delete=False) as f:
             f.write('Pre-processed text.')
             tmp = f.name
         try:
@@ -119,7 +119,7 @@ class TestFlagParsing(unittest.TestCase):
 
     def test_undownloaded_model_exits(self):
         """--model with a valid but not-downloaded model should exit 1."""
-        with mock.patch('mew.config.is_downloaded', return_value=False):
+        with mock.patch('oto.config.is_downloaded', return_value=False):
             _, err, code = _run_cli(['--model', 'fp16', 'file.md'])
         self.assertEqual(code, 1)
         self.assertIn('not downloaded', err)
@@ -136,7 +136,7 @@ class TestFlagParsing(unittest.TestCase):
 
     def test_voice_case_insensitive(self):
         """--voice should accept case-insensitive names."""
-        with mock.patch('mew.config.is_downloaded', return_value=True):
+        with mock.patch('oto.config.is_downloaded', return_value=True):
             # Should not fail on validation (will fail on file not found)
             _, err, code = _run_cli(['--voice', 'adam', 'nonexistent.md'])
         # The error should be about the file, not the voice name
@@ -297,10 +297,10 @@ class TestDryRun(unittest.TestCase):
             before = set(os.listdir(tmpdir))
             _run_cli(['-n', tmp])
             after = set(os.listdir(tmpdir))
-            # Only the temp input file should exist, no new .mew.wav or .mew.md
+            # Only the temp input file should exist, no new .oto.wav or .oto.md
             new_files = after - before
-            mew_files = [f for f in new_files if '.mew.' in f]
-            self.assertEqual(mew_files, [])
+            oto_files = [f for f in new_files if '.oto.' in f]
+            self.assertEqual(oto_files, [])
         finally:
             os.unlink(tmp)
 

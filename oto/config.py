@@ -1,16 +1,16 @@
 """
-mew.config — interactive model/voice/substitutions preference selector.
+oto.config — interactive model/voice/substitutions preference selector.
 
 Usage (via CLI):
-  mew config            interactive: optionally change model and voice
-  mew config model      change model only
-  mew config voice      change voice only
-  mew config subs       manage text substitutions
-  mew config delete     delete a downloaded model
-  mew config show       print current settings and exit
+  oto config            interactive: optionally change model and voice
+  oto config model      change model only
+  oto config voice      change voice only
+  oto config subs       manage text substitutions
+  oto config delete     delete a downloaded model
+  oto config show       print current settings and exit
 
-Preferences are stored in ~/.config/mew/prefs.json.
-Substitutions are stored in ~/.config/mew/substitutions.json.
+Preferences are stored in ~/.config/oto/prefs.json.
+Substitutions are stored in ~/.config/oto/substitutions.json.
 """
 
 from __future__ import annotations
@@ -20,9 +20,9 @@ import os
 import shutil
 from pathlib import Path
 
-PREFS_FILE        = Path.home() / ".config" / "mew" / "prefs.json"
-SUBSTITUTIONS_FILE = Path.home() / ".config" / "mew" / "substitutions.json"
-CACHE_DIR          = Path.home() / ".cache"  / "mew" / "models"
+PREFS_FILE        = Path.home() / ".config" / "oto" / "prefs.json"
+SUBSTITUTIONS_FILE = Path.home() / ".config" / "oto" / "substitutions.json"
+CACHE_DIR          = Path.home() / ".cache"  / "oto" / "models"
 
 MODEL_REGISTRY = {
     "int8":  {"file": "kokoro-v1.0.int8.onnx",  "desc": "Compact (88 MB)"},
@@ -85,11 +85,11 @@ def save_prefs(prefs: dict) -> None:
 # ── Model helpers ─────────────────────────────────────────────────────────────
 
 def is_downloaded(alias: str) -> bool:
-    from mew.speak import _model_path, _voices_path
+    from oto.speak import _model_path, _voices_path
     return _model_path(alias).exists() and _voices_path().exists()
 
 def download_model(alias: str) -> None:
-    from mew.speak import ensure_model
+    from oto.speak import ensure_model
     ensure_model(alias)
     print(f"  Model '{alias}' ready.")
 
@@ -114,7 +114,7 @@ def _play_audio(path, method: str) -> None:
 def _preview_voice(voice_name: str, prefs: dict) -> None:
     """Synthesize PREVIEW_TEXT with *voice_name* to a temp WAV and play it."""
     import os, sys, tempfile
-    from mew import speak
+    from oto import speak
 
     model    = prefs.get("model",    DEFAULTS["model"])
     playback = prefs.get("playback", DEFAULTS["playback"])
@@ -359,14 +359,14 @@ def cmd_delete(prefs: dict) -> None:
 
         if chosen == prefs["model"]:
             print(f"\n  Warning: '{chosen}' is your active model.")
-            print("  After deletion, mew will fail until you download another model.")
+            print("  After deletion, oto will fail until you download another model.")
         yn = input(f"  Delete '{chosen}'? [y/N]: ").strip().lower()
         if yn not in ("y", "yes"):
             print("  Cancelled.")
             return
 
         # Delete the specific model file, not the entire cache directory
-        from mew.speak import _model_path
+        from oto.speak import _model_path
         mp = _model_path(chosen)
         if mp.exists():
             mp.unlink()
@@ -437,7 +437,7 @@ def _fmt_sub(entry: dict, idx: int) -> str:
 
 
 def cmd_substitutions(prefs: dict) -> None:
-    """Interactive CRUD for ~/.config/mew/substitutions.json."""
+    """Interactive CRUD for ~/.config/oto/substitutions.json."""
     import re as _re
 
     ensure_substitutions_seeded()

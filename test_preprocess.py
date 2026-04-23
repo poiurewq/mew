@@ -1,18 +1,18 @@
 #!/usr/bin/env python3
 """
-test_preprocess.py — Unit tests for mew.preprocess
+test_preprocess.py — Unit tests for oto.preprocess
 
 Run with:
-    python3 -m pytest mew/test_preprocess.py
-    python3 -m pytest mew/test_preprocess.py -v
-    python3 -m pytest mew/test_preprocess.py::TestRanges
+    python3 -m pytest oto/test_preprocess.py
+    python3 -m pytest oto/test_preprocess.py -v
+    python3 -m pytest oto/test_preprocess.py::TestRanges
 """
 
 import os
 import tempfile
 import unittest
 
-from mew import preprocess as P
+from oto import preprocess as P
 
 
 # ── _number_to_words ──────────────────────────────────────────────────────────
